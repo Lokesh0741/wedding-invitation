@@ -1,0 +1,33 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Admin Login</title>
+    <link rel="stylesheet" href="{{ url_for('static',filename='css/style.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static',filename='css/themes.css') }}">
+</head>
+<body class="center-page">
+    <main class="panel">
+        <h1>Admin Login</h1>
+        
+        <form method="post" class="form" style="text-align: left;">
+            <label>Username
+                <input name="username" placeholder="Enter username" required>
+            </label>
+            <label>Password
+                <input name="password" type="password" placeholder="Enter password" required>
+            </label>
+            <button type="submit" class="button" style="width: 100%; margin-top: 15px;">Login</button>
+        </form>
+        
+        <p style="margin-top: 20px;">
+            <a href="{{ url_for('home') }}">← Back to Home</a>
+        </p>
+        
+        {% for m in get_flashed_messages() %}
+            <p class="notice">{{m}}</p>
+        {% endfor %}
+    </main>
+</body>
+</html>

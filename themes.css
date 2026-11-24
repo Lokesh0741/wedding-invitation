@@ -1,0 +1,65 @@
+/* Default Theme Fallbacks (If no theme is selected) */
+:root {
+    --wine: #713c4a;
+    --gold: #c59b5c;
+    --cream: #fffaf3;
+    --ink: #392b2d;
+    --font-serif: Georgia, serif;
+    --font-sans: Arial, sans-serif;
+    --pattern: none;
+}
+
+/* Theme 1: Royal Gold */
+html[data-theme="royal-gold"] {
+    --wine: #713c4a; 
+    --gold: #c59b5c; 
+    --cream: #fffaf3; 
+    --ink: #392b2d;
+    --font-serif: Georgia, serif; 
+    --font-sans: Arial, sans-serif;
+    --pattern: linear-gradient(135deg, #fdfbf7, #fffaf3 50%, #f4ece1);
+}
+
+/* Theme 2: Pink Floral */
+html[data-theme="pink-floral"] {
+    --wine: #b8577a; 
+    --gold: #e6a1bb; 
+    --cream: #fff5f8; 
+    --ink: #4a2a35;
+    --font-serif: Georgia, serif; 
+    --font-sans: Arial, sans-serif;
+    --pattern: linear-gradient(135deg, #ffe6ee, #fff5f8 60%, #fbd9e3);
+}
+
+/* Theme 3: Traditional Indian */
+html[data-theme="traditional"] {
+    --wine: #8b1e2d; 
+    --gold: #d4a520; 
+    --cream: #fff7e6; 
+    --ink: #3b1010;
+    --font-serif: Georgia, serif; 
+    --font-sans: Arial, sans-serif;
+    --pattern: linear-gradient(135deg, #f7d8b8, #fff7e6 55%, #f9d6c6);
+}
+
+/* Theme 4: Green Garden */
+html[data-theme="green-garden"] {
+    --wine: #3a6b4a; 
+    --gold: #8fb87a; 
+    --cream: #f6fbf3; 
+    --ink: #1f3327;
+    --font-serif: Georgia, serif; 
+    --font-sans: Arial, sans-serif;
+    --pattern: linear-gradient(135deg, #e6f4e0, #f6fbf3 55%, #d9ecd1);
+}
+
+/* Theme 5: Modern Luxury */
+html[data-theme="modern-luxury"] {
+    --wine: #1a1a1a; 
+    --gold: #b89f6a; 
+    --cream: #f7f5f1; 
+    --ink: #101010;
+    --font-serif: Georgia, serif; 
+    --font-sans: Arial, sans-serif;
+    --pattern: linear-gradient(135deg, #e9e4d8, #f7f5f1 55%, #ddd6c5);
+}

@@ -1,0 +1,56 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Guest RSVPs</title>
+    <link rel="stylesheet" href="{{ url_for('static',filename='css/style.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static',filename='css/themes.css') }}">
+</head>
+<body>
+<main class="wrap">
+    <header class="top" style="margin-bottom: 20px;">
+        <div>
+            <p class="eyebrow">Admin Panel</p>
+            <h1>RSVPs</h1>
+            <h2 style="font-size: 1.5rem; color: var(--wine);">{{invite.bride}} & {{invite.groom}}</h2>
+        </div>
+        <a href="{{url_for('dashboard')}}" class="button secondary small">← Back to Dashboard</a>
+    </header>
+
+    {% if guests %}
+    <div style="overflow-x: auto;">
+        <table>
+            <thead>
+                <tr>
+                    <th>Guest Name</th>
+                    <th>Response</th>
+                    <th>Date & Time</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for g in guests %}
+                <tr>
+                    <td><strong>{{g.guest_name}}</strong></td>
+                    <td>
+                        {% if g.response == 'Attending' %}
+                            <span style="color: green; font-weight: bold;">✔ Attending</span>
+                        {% else %}
+                            <span style="color: red; font-weight: bold;">✖ Not attending</span>
+                        {% endif %}
+                    </td>
+                    <td style="font-size: 14px; color: #666;">{{g.created_at}}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    {% else %}
+    <div class="panel" style="text-align: center; margin-top: 30px;">
+        <p style="font-size: 1.2rem;">No guest responses yet.</p>
+        <p style="color: #666;">Share the invitation link with your guests to get RSVPs.</p>
+    </div>
+    {% endif %}
+</main>
+</body>
+</html>

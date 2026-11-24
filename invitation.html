@@ -1,0 +1,134 @@
+<!doctype html>
+<html lang="en" data-theme="{{invite.theme or 'royal-gold'}}">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>{{invite.bride}} & {{invite.groom}} | Wedding Invitation</title>
+    <link rel="stylesheet" href="{{url_for('static',filename='css/style.css')}}">
+    <link rel="stylesheet" href="{{url_for('static',filename='css/themes.css')}}">
+</head>
+<body class="invite-page">
+
+<section class="cover" id="cover">
+    <div class="cover-box">
+        <p class="eyebrow">Together with our families</p>
+        <h1>{{invite.bride}} <em>&</em> {{invite.groom}}</h1>
+        <p>{{invite.message}}</p>
+        <button class="button" id="openBtn" onclick="document.getElementById('cover').classList.add('hide'); document.getElementById('content').classList.remove('hide'); {% if invite.music %}document.getElementById('bgm').play().catch(()=>{});{% endif %}">
+            Open the Invitation
+        </button>
+    </div>
+</section>
+
+{% if invite.music %}
+<audio id="bgm" loop preload="none">
+    <source src="{{url_for('static',filename='music/' ~ invite.music)}}">
+</audio>
+<button class="music-btn" id="musicBtn" title="Play / Pause" onclick="toggleMusic()">♪</button>
+{% endif %}
+
+<main id="content" class="hide">
+    <section class="hero">
+        <p class="eyebrow">You are warmly invited</p>
+        <h1>{{invite.bride}} <em>&</em> {{invite.groom}}</h1>
+        <h2>{{invite.wedding_date|replace('T',' at ')}}</h2>
+        <h3>{{invite.venue}}</h3>
+        <p>{{invite.address}}</p>
+        {% if invite.map_link %}
+            <a class="button" target="_blank" rel="noopener" href="{{invite.map_link}}">📍 Open Location</a>
+        {% endif %}
+    </section>
+
+    {% if invite.photo %}
+    <div class="photo">
+        <img src="{{url_for('uploaded_file',filename=invite.photo)}}" alt="Couple photo">
+    </div>
+    {% endif %}
+
+    <section class="family">
+        <article>
+            <h2>Bride's Family</h2>
+            <p>{{invite.bride_family}}</p>
+        </article>
+        <article>
+            <h2>Groom's Family</h2>
+            <p>{{invite.groom_family}}</p>
+        </article>
+    </section>
+
+    <section class="events">
+        <p class="eyebrow">Celebrate with us</p>
+        <h2>Wedding Events</h2>
+        {% for e in invite.events.split('\n') %}
+            {% if e.strip() %}
+                <p class="event">{{e}}</p>
+            {% endif %}
+        {% endfor %}
+    </section>
+
+    {% if photos %}
+    <section class="gallery-section">
+        <p class="eyebrow">Moments</p>
+        <h2>Our Gallery</h2>
+        <div class="gallery">
+            {% for p in photos %}
+            <img src="{{url_for('uploaded_file',filename=p.filename)}}" alt="" class="gallery-item" onclick="openLightbox(this.src)">
+            {% endfor %}
+        </div>
+    </section>
+    {% endif %}
+
+    <section class="count">
+        <h2>Countdown</h2>
+        <div id="timer" data-date="{{invite.wedding_date}}">
+            <b id="days">--</b> Days <b id="hours">--</b> Hours
+            <b id="minutes">--</b> Minutes <b id="seconds">--</b> Seconds
+        </div>
+    </section>
+
+    <section class="rsvp" id="rsvp">
+        <h2>Will you join us?</h2>
+        <form method="post" action="{{url_for('rsvp',slug=invite.slug)}}">
+            <input name="guest_name" placeholder="Your name" required>
+            <select name="response" required>
+                <option value="">Your response</option>
+                <option>Attending</option>
+                <option>Not attending</option>
+            </select>
+            <button class="button">Send RSVP</button>
+        </form>
+        {% for m in get_flashed_messages() %}
+            <p class="notice">{{m}}</p>
+        {% endfor %}
+    </section>
+
+    <footer>With love, {{invite.bride}} & {{invite.groom}}</footer>
+</main>
+
+<div id="lightbox" class="lightbox hide" onclick="closeLightbox()">
+    <img id="lightbox-img" src="" alt="">
+</div>
+
+<script src="{{url_for('static',filename='js/timer.js')}}"></script>
+<script>
+function toggleMusic(){
+    const a = document.getElementById('bgm');
+    const b = document.getElementById('musicBtn');
+    if (a.paused){ 
+        a.play(); 
+        b.classList.add('playing'); 
+    } else { 
+        a.pause(); 
+        b.classList.remove('playing'); 
+    }
+}
+function openLightbox(src){
+    document.getElementById('lightbox-img').src = src;
+    document.getElementById('lightbox').classList.remove('hide');
+}
+function closeLightbox(){
+    document.getElementById('lightbox').classList.add('hide');
+}
+</script>
+</body>
+</html>

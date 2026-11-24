@@ -1,0 +1,132 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Invitation Details</title>
+    <link rel="stylesheet" href="{{ url_for('static',filename='css/style.css') }}">
+</head>
+<body>
+<main class="wrap narrow">
+    <header class="top">
+        <h1>{{'Edit Invitation' if invite else 'Create Invitation'}}</h1>
+        <a href="{{url_for('dashboard')}}">Dashboard</a>
+    </header>
+
+    {% for m in get_flashed_messages() %}
+        <p class="notice">{{m}}</p>
+    {% endfor %}
+
+    <form class="form" method="post" enctype="multipart/form-data">
+        <label>Bride's name
+            <input name="bride" value="{{invite.bride if invite else ''}}" required>
+        </label>
+        
+        <label>Groom's name
+            <input name="groom" value="{{invite.groom if invite else ''}}" required>
+        </label>
+        
+        <label>Link slug
+            <input name="slug" value="{{invite.slug if invite else ''}}" placeholder="ananya-weds-rahul" required>
+            <small>Lowercase letters, digits, hyphens.</small>
+        </label>
+        
+        <label>Wedding date and time
+            <input type="datetime-local" name="wedding_date" value="{{invite.wedding_date if invite else ''}}">
+        </label>
+        
+        <label>Venue
+            <input name="venue" value="{{invite.venue if invite else ''}}">
+        </label>
+        
+        <label>Full address
+            <input name="address" value="{{invite.address if invite else ''}}">
+        </label>
+
+        <label>Google Maps link
+            <input name="map_link" type="url" placeholder="https://maps.google.com/?q=..." value="{{invite.map_link if invite else ''}}">
+            <small>Paste "Share → Copy link" URL from Google Maps.</small>
+        </label>
+
+        <label>Invitation message
+            <textarea name="message" rows="3">{{invite.message if invite else 'With love, we invite you to celebrate our special day.'}}</textarea>
+        </label>
+        
+        <label>Bride's family
+            <textarea name="bride_family" rows="2">{{invite.bride_family if invite else ''}}</textarea>
+        </label>
+        
+        <label>Groom's family
+            <textarea name="groom_family" rows="2">{{invite.groom_family if invite else ''}}</textarea>
+        </label>
+        
+        <label>Events (one per line)
+            <textarea name="events" rows="5">{{invite.events if invite else 'Mehendi – Date and time\nWedding – Date and time\nReception – Date and time'}}</textarea>
+        </label>
+
+        <label>Theme
+            <select name="theme">
+                {% set current = invite.theme if invite else 'royal-gold' %}
+                {% for key, label in themes.items() %}
+                    <option value="{{key}}" {% if key==current %}selected{% endif %}>{{label}}</option>
+                {% endfor %}
+            </select>
+        </label>
+
+        <label>Couple photo (JPG/PNG/WEBP, main hero image)
+            <input type="file" name="photo" accept=".jpg,.jpeg,.png,.webp">
+        </label>
+
+        <label>Background music (MP3/OGG/WAV/M4A)
+            <input type="file" name="music" accept=".mp3,.ogg,.wav,.m4a">
+            {% if invite and invite.music %}
+                <small>Current: {{invite.music}}</small>
+            {% endif %}
+        </label>
+
+        <label>Gallery photos (multiple)
+            <input type="file" name="gallery" accept=".jpg,.jpeg,.png,.webp" multiple>
+        </label>
+
+        <button class="button">Save Invitation</button>
+    </form>
+
+    {% if invite and photos %}
+    <section class="share">
+        <h2>Gallery ({{photos|length}})</h2>
+        <div class="gallery-admin">
+            {% for p in photos %}
+            <div class="thumb">
+                <img src="{{url_for('uploaded_file',filename=p.filename)}}" alt="">
+                <form method="post" action="{{url_for('delete_photo',photo_id=p.id)}}" onsubmit="return confirm('Remove this photo?')">
+                    <button class="button small danger">×</button>
+                </form>
+            </div>
+            {% endfor %}
+        </div>
+    </section>
+    {% endif %}
+
+    {% if invite and public_link %}
+    <section class="share">
+        <h2>Your shareable invitation link</h2>
+        <input id="shareLink" readonly value="{{public_link}}">
+        <button class="button" type="button" onclick="copyLink()">Copy Link</button>
+        <a class="button secondary" target="_blank" href="{{public_link}}">Preview</a>
+        <p>Copy this link and paste it into WhatsApp.</p>
+    </section>
+    {% endif %}
+</main>
+
+<script>
+function copyLink(){
+    const x = document.getElementById('shareLink');
+    x.select();
+    x.setSelectionRange(0, 99999);
+    navigator.clipboard.writeText(x.value)
+        .then(() => alert('Invitation link copied!'))
+        .catch(() => alert('Please copy manually.'));
+}
+</script>
+</body>
+</html>

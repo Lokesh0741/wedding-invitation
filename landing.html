@@ -1,0 +1,19 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Wedding Invitation Studio</title>
+    <link rel="stylesheet" href="{{ url_for('static',filename='css/style.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static',filename='css/themes.css') }}">
+</head>
+<body class="center-page">
+    <main class="panel">
+        <p class="eyebrow">Wedding Invitation Studio</p>
+        <h1>Create beautiful invitations</h1>
+        <p>Create a separate invitation link for every couple and share it through WhatsApp.</p>
+        <br>
+        <a class="button" href="{{ url_for('login') }}">Admin Login</a>
+    </main>
+</body>
+</html>

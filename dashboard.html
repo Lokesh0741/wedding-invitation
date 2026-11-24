@@ -1,0 +1,52 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Admin Dashboard</title>
+    <link rel="stylesheet" href="{{ url_for('static',filename='css/style.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static',filename='css/themes.css') }}">
+</head>
+<body>
+<main class="wrap">
+    <header class="top">
+        <div>
+            <p class="eyebrow">Admin panel</p>
+            <h1>Your Invitations</h1>
+        </div>
+        <a href="{{url_for('logout')}}" class="button secondary small">Logout</a>
+    </header>
+    
+    <div style="margin-bottom: 25px;">
+        <a class="button" href="{{url_for('new_invitation')}}">+ Create New Invitation</a>
+    </div>
+
+    {% for m in get_flashed_messages() %}
+        <p class="notice">{{m}}</p>
+    {% endfor %}
+
+    {% if invites %}
+    <div class="cards">
+        {% for i in invites %}
+        <article class="card">
+            <h2>{{i.bride}} & {{i.groom}}</h2>
+            <p>{{i.venue}} · {{i.wedding_date|replace('T', ' at ')}}</p>
+            <p><a href="{{url_for('public_invitation',slug=i.slug)}}" target="_blank">Open invitation</a></p>
+            <p class="url">{{request.url_root.rstrip('/')}}{{url_for('public_invitation',slug=i.slug)}}</p>
+            
+            <div class="actions">
+                <a class="button small secondary" href="{{url_for('edit_invitation',invite_id=i.id)}}">Edit</a>
+                <a class="button small secondary" href="{{url_for('view_rsvps',invite_id=i.id)}}">View RSVPs</a>
+                <form method="post" action="{{url_for('delete_invitation',invite_id=i.id)}}" onsubmit="return confirm('Delete this invitation?')">
+                    <button class="button small danger">Delete</button>
+                </form>
+            </div>
+        </article>
+        {% endfor %}
+    </div>
+    {% else %}
+    <p>No invitations yet. Click “Create New Invitation”.</p>
+    {% endif %}
+</main>
+</body>
+</html>
