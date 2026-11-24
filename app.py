@@ -12,8 +12,7 @@ MUSIC_DIR = ROOT / "static" / "music"
 UPLOADS.mkdir(exist_ok=True)
 MUSIC_DIR.mkdir(parents=True, exist_ok=True)
 
-app = Flask(__name__)
-app.template_folder = 'templates' 
+app = Flask(__name__, template_folder='.', static_folder='.') 
 app.secret_key = os.environ.get("SECRET_KEY", "replace-this-with-a-long-random-secret")
 app.config["MAX_CONTENT_LENGTH"] = 25 * 1024 * 1024
 IMAGE_EXT = {"jpg", "jpeg", "png", "webp"}
